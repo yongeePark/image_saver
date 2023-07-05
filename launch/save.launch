@@ -1,0 +1,18 @@
+<launch>
+    <!-- Launch the ROS node -->
+    <arg name="package_path" default="$(find image_saver)"/>
+    <arg name="saving_directory" default="images/data_N1_ParkingLot"/>
+    <node pkg="image_saver" type="image_saver.py" name="image_saver" output="screen">
+        <!-- Add any necessary arguments to the Python script -->
+        <param name="topic_name" value="/camera/color/image_raw"/>
+        <param name="save_path" value="$(arg package_path)/$(arg saving_directory)/"/>
+        <param name="image_name" value="data_N1_ParkingLot"/>
+    </node>
+
+    <node name="republish" type="republish" pkg="image_transport" output="screen"
+    args="compressed in:=/camera/color/image_raw raw out:=/camera/color/image_raw">
+     <param name="image_transport" value="compressed"/>
+    </node>
+
+
+</launch>
