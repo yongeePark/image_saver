@@ -10,6 +10,7 @@ project(image_saver)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   cv_bridge
+  image_transport
 )
 
 ## System dependencies are found with CMake's conventions
@@ -108,6 +109,9 @@ catkin_package(
 #  DEPENDS system_lib
 )
 
+set(LIBS 
+${OpenCV_LIBS} 
+)
 ###########
 ## Build ##
 ###########
@@ -129,25 +133,13 @@ include_directories(
 ## either from message generation or dynamic reconfigure
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
-## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/image_saver_node.cpp)
 
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+add_executable(image_publisher src/image_publisher.cpp)
+add_dependencies(image_publisher ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(image_publisher
+  ${catkin_LIBRARIES}
+  ${LIBS}
+)
 
 #############
 ## Install ##

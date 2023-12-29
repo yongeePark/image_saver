@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="dataset_path" default="/home/usrg/nn_image_conversion/OfficialDataset/eth3d/test/foreground_occlusion/"/>
+    <arg name="association" default="associated.txt"/>
+
+    <arg name="delay_time" default="1000"/>
+    <arg name="start_index" default="201"/>
+    
+    <node name="image_publisher" pkg="image_saver" type="image_publisher" output="screen"
+    args="$(arg dataset_path)$(arg association) $(arg dataset_path)" >
+      <param name="delay_time" value="$(arg delay_time)"/>
+      <param name="start_index" value="$(arg start_index)"/>
+      <!-- <remap from="/camera/depth_registered/image_raw" to="/camera/depth/image_rect_raw"/>-->
+      <remap from="/camera/depth/image_rect_raw" to="/camera/aligned_depth_to_color/image_raw"/> 
+    </node>
+</launch>
